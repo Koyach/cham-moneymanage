@@ -32,7 +32,10 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({ state, onDeleteExpense
       </div>
       
       <div className="divide-y divide-gray-100">
-        {sortedExpenses.map((expense) => (
+        {sortedExpenses.map((expense) => {
+          const splitAmt = expense.splitAmount ?? Math.round(expense.amount / 2);
+          const otherPerson = expense.paidBy === 'person1' ? state.person2 : state.person1;
+          return (
           <div key={expense.id} className="p-4 hover:bg-gray-50 transition-colors flex items-center justify-between group">
             <div className="flex-1">
               <div className="flex items-center justify-between mb-1">
@@ -41,11 +44,14 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({ state, onDeleteExpense
                   ¥{expense.amount.toLocaleString()}
                 </span>
               </div>
-              <div className="flex items-center text-sm text-gray-500 gap-3">
+              <div className="flex items-center flex-wrap text-sm text-gray-500 gap-x-3 gap-y-1">
                 <span>{expense.date}</span>
                 <span className="flex items-center gap-1">
                   <span className="w-2 h-2 rounded-full bg-blue-500"></span>
                   {expense.paidBy === 'person1' ? state.person1 : state.person2} が支払い
+                </span>
+                <span className="text-orange-600">
+                  → {otherPerson} に ¥{splitAmt.toLocaleString()} 請求
                 </span>
               </div>
             </div>
@@ -58,7 +64,8 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({ state, onDeleteExpense
               <Trash2 className="w-5 h-5" />
             </button>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

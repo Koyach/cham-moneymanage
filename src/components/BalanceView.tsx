@@ -11,7 +11,7 @@ export const BalanceView: React.FC<BalanceViewProps> = ({ state }) => {
   const balance = calculateBalance(state);
 
   const getOweMessage = () => {
-    if (balance.difference === 0) {
+    if (balance.amountOwed === 0) {
       return '精算は不要です';
     }
 
